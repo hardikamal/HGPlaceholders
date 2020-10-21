@@ -9,7 +9,7 @@
 import UIKit
 
 // MARK: Utilities methods to switch to placeholders
-extension TableView: PlaceholdersSwitcher {
+extension HGTableView: PlaceholdersSwitcher {
     
     public func showLoadingPlaceholder() {
         guard let dataSource = placeholdersProvider.loadingDataSource() else {

@@ -12,7 +12,7 @@ import HGPlaceholders
 
 class ViewController: UITableViewController {
     
-    var placeholderTableView: TableView?
+    var placeholderTableView: HGTableView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,7 +22,7 @@ class ViewController: UITableViewController {
         let nib = UINib(nibName: "ExampleTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "CustomPlaceholderCell")
                 
-        placeholderTableView = tableView as? TableView
+        placeholderTableView = tableView as? HGTableView
         placeholderTableView?.placeholderDelegate = self
     }
     
@@ -111,7 +111,7 @@ extension ViewController: PlaceholderDelegate {
 
 }
 
-class ProjectNameTableView: TableView {
+class ProjectNameTableView: HGTableView {
     
    override func customSetup() {
         placeholdersProvider = .summer

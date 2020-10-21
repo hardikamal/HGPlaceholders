@@ -119,7 +119,7 @@ extension PlaceholderDataSourceDelegate: UITableViewDataSource {
         
         // forward action to placeholder delegate
         placeholderTableViewCell.onActionButtonTap = { [unowned self] in
-            guard let placeholderTableView = (tableView as? TableView) else { return }
+            guard let placeholderTableView = (tableView as? HGTableView) else { return }
             placeholderTableView.placeholderDelegate?.view(tableView, actionButtonTappedFor: self.placeholder)
         }
         
@@ -189,7 +189,7 @@ extension PlaceholderDataSourceDelegate: UICollectionViewDataSource {
         
         // forward action to placeholder delegate
         placeholderCollectionViewCell.onActionButtonTap = { [unowned self] in
-            guard let placeholderCollectionView = collectionView as? CollectionView else { return }
+            guard let placeholderCollectionView = collectionView as? HGCollectionView else { return }
             placeholderCollectionView.placeholderDelegate?.view(collectionView, actionButtonTappedFor: self.placeholder)
         }
         return cell

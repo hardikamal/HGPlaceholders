@@ -12,7 +12,7 @@ import UIKit
 // TODO: try to refactor this code it looks like the TableView+Switcher code
 
 // MARK: Utilities methods to switch to placeholders
-extension CollectionView: PlaceholdersSwitcher {
+extension HGCollectionView: PlaceholdersSwitcher {
     
     public func showLoadingPlaceholder() {
         guard let dataSource = placeholdersProvider.loadingDataSource() else {
