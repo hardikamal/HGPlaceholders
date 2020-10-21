@@ -43,16 +43,20 @@ public struct PlaceholderKey: Hashable {
     public static var noResultsKey = PlaceholderKey(value: "noResults")
     
     /// Is used to add new keys
-    public static func custom(key: String) -> PlaceholderKey { return PlaceholderKey(value: key) }
+    public static func custom(key: String) -> PlaceholderKey {
+        return PlaceholderKey(value: key)
+    }
     
-    public var hashValue: Int {
-        return value.hashValue
+    public func hash(into hasher: inout Hasher) {
+        return hasher.combine(value.hashValue)
     }
 }
 
 extension PlaceholderKey: Equatable {
+    
     /// To make PlaceholderKey hashable 
     public static func == (lhs: PlaceholderKey, rhs: PlaceholderKey) -> Bool {
         return lhs.value == rhs.value
     }
+    
 }

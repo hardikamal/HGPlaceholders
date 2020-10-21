@@ -36,6 +36,8 @@ class PlaceholderDataSourceDelegate: NSObject {
     ///   - tintColor: the tint color to apply
     func fill(cell: CellPlaceholding, to placeholder: Placeholder, tintColor: UIColor?) {
         
+        /* if the the placeholder created by xib and data/style are nil, we should keep the xib data/style */
+        
         // apply style
         if let style = placeholder.style {
             cell.apply(style: style, tintColor: tintColor)
@@ -83,6 +85,7 @@ class PlaceholderDataSourceDelegate: NSObject {
         }
         return height
     }
+    
 }
 
 // MARK: table view data source methods
@@ -108,7 +111,7 @@ extension PlaceholderDataSourceDelegate: UITableViewDataSource {
        
         cell.selectionStyle = .none
         // If the cell does not inherit from PlaceholderTableViewCell, the data and the style can't be applied
-        guard let placeholderTableViewCell = (cell as? PlaceholderTableViewCell) else {
+        guard let placeholderTableViewCell = cell as? PlaceholderTableViewCell else {
             return cell
         }
         
@@ -139,12 +142,13 @@ extension PlaceholderDataSourceDelegate: UITableViewDelegate {
         var tableViewHeight = height(of: tableView)
         
         // subtract tableHeaderView Height out of height
-        if let tableStyle = placeholder.style, tableStyle.shouldShowTableViewHeader {
+        let style = placeholder.style
+        if style?.shouldShowTableViewHeader != true {
             tableViewHeight -= tableView.tableHeaderView?.bounds.height ?? 0
         }
         
         // subtract tableFooterView Height out of height
-        if let tableStyle = placeholder.style, tableStyle.shouldShowTableViewFooter {
+        if style?.shouldShowTableViewFooter != true {
             tableViewHeight -= tableView.tableFooterView?.bounds.height ?? 0
         }
         
@@ -154,7 +158,10 @@ extension PlaceholderDataSourceDelegate: UITableViewDelegate {
     // animate the cell
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
-        if placeholder.style?.isAnimated == false { return }
+        if placeholder.style?.isAnimated == false {
+            return
+        }
+        
         guard let placeholderTableViewCell = cell as? PlaceholderTableViewCell else { return }
         animate(cell: placeholderTableViewCell)
     }
@@ -174,7 +181,7 @@ extension PlaceholderDataSourceDelegate: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
 
         // If the cell does not inherit from PlaceholderTableViewCell, the data and the style can't be applied
-        guard let placeholderCollectionViewCell = (cell as? PlaceholderCollectionViewCell) else {
+        guard let placeholderCollectionViewCell = cell as? PlaceholderCollectionViewCell else {
             return cell
         }
         
@@ -182,7 +189,7 @@ extension PlaceholderDataSourceDelegate: UICollectionViewDataSource {
         
         // forward action to placeholder delegate
         placeholderCollectionViewCell.onActionButtonTap = { [unowned self] in
-            guard let placeholderCollectionView = (collectionView as? CollectionView) else { return }
+            guard let placeholderCollectionView = collectionView as? CollectionView else { return }
             placeholderCollectionView.placeholderDelegate?.view(collectionView, actionButtonTappedFor: self.placeholder)
         }
         return cell

@@ -14,7 +14,7 @@ private let reuseIdentifier = "Cell"
 class CollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     var placeholderCollectionView: CollectionView? {
-        get { return collectionView as? CollectionView }
+        return collectionView as? CollectionView
     }
     
     var data = [
@@ -38,13 +38,9 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        DispatchQueue.main.async {
-            self.collectionView?.collectionViewLayout.invalidateLayout()
-        }
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        collectionView?.collectionViewLayout.invalidateLayout()
     }
-    
     
     /*
      // MARK: - Navigation
@@ -60,11 +56,11 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {        
         switch kind {
-        case UICollectionElementKindSectionHeader:
+        case UICollectionView.elementKindSectionHeader:
             
             let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Header", for: indexPath)
             return headerView
-        case UICollectionElementKindSectionFooter:
+        case UICollectionView.elementKindSectionFooter:
             let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Footer", for: indexPath)
             return footerView
             
@@ -116,9 +112,14 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: 44)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: 44)
+    }
 }
 
 extension CollectionViewController: PlaceholderDelegate {
+    
     func view(_ view: Any, actionButtonTappedFor placeholder: Placeholder) {
         (view as? CollectionView)?.showDefault()
     }
